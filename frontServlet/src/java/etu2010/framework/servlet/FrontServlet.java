@@ -6,6 +6,7 @@ package etu2010.framework.servlet;
  * and open the template in the editor.
  */
 
+import etu2010.framework.FonctionURL;
 import etu2010.framework.Mapping;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,6 +23,17 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class FrontServlet extends HttpServlet {
         Map<String,Mapping> MappingUrls=new HashMap<>();
+
+    @Override
+    public void init() throws ServletException {
+//         MappingUrls=FonctionURL.fonction();
+//         
+//         for(Map.Entry<String,Mapping> u : MappingUrls.entrySet())
+//         {
+//             System.out.println(u.getKey() +  " : "  +  u.getValue().getClassName()+ " || " +  u.getValue().getMethod());
+//         }
+    }
+        
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,6 +47,14 @@ public class FrontServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         try (PrintWriter out = response.getWriter()) {
+                     MappingUrls=FonctionURL.fonction();
+                     System.out.println("huhu");
+         
+         for(Map.Entry<String,Mapping> u : MappingUrls.entrySet())
+         {
+             System.out.println("jiji");
+             System.out.println(u.getKey() +  " : "  +  u.getValue().getClassName()+ " || " +  u.getValue().getMethod());
+         }
             /* TODO output your page here. You may use following sample code. */
             out.println(request.getContextPath()+request.getServletPath()+ "?" +request.getQueryString());
            
@@ -55,6 +75,7 @@ public class FrontServlet extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         processRequest(request, response);
+        
     }
 
     /**
