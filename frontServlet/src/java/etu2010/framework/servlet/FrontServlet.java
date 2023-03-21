@@ -46,20 +46,18 @@ public class FrontServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        try (PrintWriter out = response.getWriter()) {
+        PrintWriter out = response.getWriter();
                      MappingUrls=FonctionURL.fonction();
-                     System.out.println("huhu");
          
          for(Map.Entry<String,Mapping> u : MappingUrls.entrySet())
          {
-             System.out.println("jiji");
              System.out.println(u.getKey() +  " : "  +  u.getValue().getClassName()+ " || " +  u.getValue().getMethod());
          }
             /* TODO output your page here. You may use following sample code. */
             out.println(request.getContextPath()+request.getServletPath()+ "?" +request.getQueryString());
            
             
-        }
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
