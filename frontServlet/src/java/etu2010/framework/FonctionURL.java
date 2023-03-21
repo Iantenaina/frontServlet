@@ -25,15 +25,13 @@ public class FonctionURL {
        {
          
            Method[] m=li.get(i).getMethods();
-            for(int j=0;j<m.length;i++)
+            for(int j=0;j<m.length;j++)
             {
-                System.out.println("huhu");
                if(m[j].isAnnotationPresent(Url.class))
                {
                                   
                    Url u=m[j].getAnnotation(Url.class);
                    MappingUrls.put(u.nom(),new Mapping(li.get(i).getName(),m[j].getName()));
-                    System.out.println("haha");
                }
             }
        }
