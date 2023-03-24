@@ -5,6 +5,7 @@
  */
 package test;
 
+import etu2010.framework.ModelView;
 import etu2010.framework.servlet.Url;
 
 /**
@@ -13,9 +14,11 @@ import etu2010.framework.servlet.Url;
  */
 
 public class ClassTest {
- @Url(nom="")
- public void test()
+ @Url(nom="/suite")
+ public ModelView test()
   {
-      
-  }             
+      ModelView m=new ModelView();
+      m.setView("huhu");
+    return m;
+  }
 }

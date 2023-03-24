@@ -1,0 +1,2 @@
+jar cf ./fr.jar ./build/web/WEB-INF/classes/etu2010
+copy "C:\Users\itu\Documents\projet github\frontServlet\frontServlet\fr.jar" "C:\Users\itu\Documents\projet github\frontServlet\testFramework\web\WEB-INF\lib"
