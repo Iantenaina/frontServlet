@@ -16,6 +16,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -49,12 +50,8 @@ public class FrontServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
             out.println(request.getContextPath()+request.getServletPath()+ "?" +request.getQueryString());
-           
-            
-        
-                   System.out.println(request.getRequestURI().replace(request.getContextPath(), ""));
-
-                   String currentUrl = request.getRequestURI().replace(request.getContextPath(), "");
+             String currentUrl = request.getRequestURI().replace(request.getContextPath(), "");
+             
        if (MappingUrls.containsKey(currentUrl))
        {
            Mapping m=MappingUrls.get(currentUrl);
@@ -62,7 +59,8 @@ public class FrontServlet extends HttpServlet {
            Object objet =classe.newInstance();
            ModelView model=(ModelView)objet.getClass().getMethod(m.getMethod()).invoke(objet);
            response.getWriter().print(model.getView());
-           System.out.println("huhuuhuhuhuhuhuh");
+        RequestDispatcher disp = request.getRequestDispatcher(model.getView());
+        disp.forward(request, response);
            
            
        }
