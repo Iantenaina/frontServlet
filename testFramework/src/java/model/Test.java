@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
+package model;
 
 import etu2010.framework.ModelView;
 import etu2010.framework.servlet.Url;
@@ -12,13 +12,12 @@ import etu2010.framework.servlet.Url;
  *
  * @author itu
  */
-
-public class ClassTest {
- @Url(nom="/suite")
+public class Test {
+     @Url(nom="/suite")
  public ModelView test()
   {
       ModelView m=new ModelView();
-      m.setView("huhu");
+      m.setView("test.jsp");
     return m;
   }
 }

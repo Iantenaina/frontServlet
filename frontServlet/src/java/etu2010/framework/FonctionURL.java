@@ -19,7 +19,7 @@ public class FonctionURL {
     public  static Map<String,Mapping> fonction()
     {
        Map<String,Mapping> MappingUrls=new HashMap<>();
-       List<Class<?>>li= AnnotationFunction.getModelClasses("test");
+       List<Class<?>>li= AnnotationFunction.getModelClasses("model");
          System.out.println(li.size());
        for(int i =0;i<li.size();i++)
        {

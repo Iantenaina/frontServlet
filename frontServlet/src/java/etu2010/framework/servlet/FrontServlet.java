@@ -52,6 +52,8 @@ public class FrontServlet extends HttpServlet {
             out.println(request.getContextPath()+request.getServletPath()+ "?" +request.getQueryString());
              String currentUrl = request.getRequestURI().replace(request.getContextPath(), "");
              
+           out.print(MappingUrls.size());
+             
        if (MappingUrls.containsKey(currentUrl))
        {
            Mapping m=MappingUrls.get(currentUrl);

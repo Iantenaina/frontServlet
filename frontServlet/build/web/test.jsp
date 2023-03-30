@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-      ok
+      ok test framework
     </body>
 </html>
