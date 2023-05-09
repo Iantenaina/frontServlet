@@ -11,7 +11,10 @@ import etu2010.framework.Mapping;
 import etu2010.framework.ModelView;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -59,10 +62,34 @@ public class FrontServlet extends HttpServlet {
            Mapping m=MappingUrls.get(currentUrl);
            Class<?> classe=Class.forName(m.getClassName());
            Object objet =classe.newInstance();
+           
+            for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
+            {
+                Field[]at=objet.getClass().getDeclaredFields();
+                for(int i=0;i<at.length;i++)
+                {
+                    if(at[i].getName().equalsIgnoreCase(mapForm.getKey()))
+                    {
+                      at[i].setAccessible(true);
+                      if(at[i].getType()==int.class)
+                        { at[i].setInt(objet, Integer.parseInt(mapForm.getValue()[0]));}
+                      if(at[i].getType()==Double.class)
+                        { at[i].setDouble(objet, Double.valueOf(mapForm.getValue()[0]));}                      
+                    }
+                }
+            }
            ModelView model=(ModelView)objet.getClass().getMethod(m.getMethod()).invoke(objet);
+            
+           if(model.getData()!=null)
+           {
+              for(Map.Entry<String,Object> newMap :model.getData().entrySet())
+              {
+                  request.setAttribute(newMap.getKey(),newMap.getValue());
+              }
+           }
            response.getWriter().print(model.getView());
-        RequestDispatcher disp = request.getRequestDispatcher(model.getView());
-        disp.forward(request, response);
+                RequestDispatcher disp = request.getRequestDispatcher(model.getView());
+                 disp.forward(request, response);
            
            
        }
