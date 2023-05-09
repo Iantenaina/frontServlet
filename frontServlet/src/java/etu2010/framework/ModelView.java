@@ -3,19 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package test;
-
-import etu2010.framework.servlet.Url;
+package etu2010.framework;
 
 /**
  *
  * @author itu
  */
+public class ModelView {
+    String view ;
 
-public class ClassTest {
- @Url(nom="")
- public void test()
-  {
-      
-  }             
+    public String getView() {
+        return view;
+    }
+
+    public void setView(String view) {
+        this.view = view;
+    }
+    
 }
