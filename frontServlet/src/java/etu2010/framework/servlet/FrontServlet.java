@@ -73,6 +73,7 @@ public class FrontServlet extends HttpServlet {
                       at[i].setAccessible(true);
                       if(at[i].getType()==int.class)
                         { at[i].setInt(objet, Integer.parseInt(mapForm.getValue()[0]));}
+                      
                       if(at[i].getType()==Double.class)
                         { at[i].setDouble(objet, Double.valueOf(mapForm.getValue()[0]));}                      
                     }
