@@ -5,20 +5,15 @@
  */
 package model;
 
-import etu2010.framework.ModelView;
 import etu2010.framework.servlet.Url;
 
 /**
  *
- * @author itu
+ * @author Iante
  */
-public class Test {
-     @Url(nom="/suite")
- public ModelView test()
-  {
-      ModelView m=new ModelView();
-      m.addItem("huhu",1);
-      m.setView("test.jsp");
-    return m;
-  }
+public class Identite
+{
+    String nom;
+    String prenom;
+    int age;
 }
