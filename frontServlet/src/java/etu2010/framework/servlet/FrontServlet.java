@@ -13,8 +13,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.text.DateFormat;
-import java.util.Date;
+import java.lang.reflect.Method;
+import java.lang.reflect.Parameter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -37,17 +37,7 @@ public class FrontServlet extends HttpServlet {
         MappingUrls=FonctionURL.fonction();
         
     }
-    
-        
-    /**
-     * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
-     * methods.
-     *
-     * @param request servlet request
-     * @param response servlet response
-     * @throws ServletException if a servlet-specific error occurs
-     * @throws IOException if an I/O error occurs
-     */
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
         response.setContentType("text/html;charset=UTF-8");
@@ -62,6 +52,8 @@ public class FrontServlet extends HttpServlet {
            Mapping m=MappingUrls.get(currentUrl);
            Class<?> classe=Class.forName(m.getClassName());
            Object objet =classe.newInstance();
+
+          Method method =objet.getClass().getMethod(m.getMethod());
            
             for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
             {
@@ -79,7 +71,27 @@ public class FrontServlet extends HttpServlet {
                     }
                 }
             }
-           ModelView model=(ModelView)objet.getClass().getMethod(m.getMethod()).invoke(objet);
+ //////////////////////////////////////////////////////////////////////////      
+                Object[] obj;
+                 Parameter[]parametre;
+                 parametre= method.getParameters();
+                 obj=new Object[parametre.length];
+                  for(int j=0;j<parametre.length;j++)
+                    {
+                      if(parametre[j].isAnnotationPresent(Argument.class))
+                      {
+                          Argument argument=parametre[j].getAnnotation(Argument.class);                  
+                            for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
+                            { 
+                                if(argument.nom().equals(mapForm.getKey()))
+                                {
+                                   obj[j]=(Object)mapForm.getValue()[0];
+                                }
+                            }
+                      }
+                   }               
+           ModelView model=(ModelView)method.invoke(objet,obj);
+            
             
            if(model.getData()!=null)
            {
@@ -95,7 +107,7 @@ public class FrontServlet extends HttpServlet {
            
        }
     }
-
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
      * Handles the HTTP <code>GET</code> method.
