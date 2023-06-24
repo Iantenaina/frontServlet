@@ -6,9 +6,11 @@ package etu2010.framework.servlet;
  * and open the template in the editor.
  */
 
+import etu2010.framework.FileUpload;
 import etu2010.framework.FonctionURL;
 import etu2010.framework.Mapping;
 import etu2010.framework.ModelView;
+import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
@@ -23,14 +25,20 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.Part;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 /**
  *
  * @author ITU
  */
+@MultipartConfig()
 public class FrontServlet extends HttpServlet {
    Map<String,Mapping> MappingUrls=new HashMap<>();
 
@@ -39,6 +47,7 @@ public class FrontServlet extends HttpServlet {
         MappingUrls=FonctionURL.fonction();
         
     }
+/////////////////////////////////////////////////////////////////8    
     public Object[] convertArray(Type type,String[]parametre)
     {
         Object[] obj;
@@ -60,6 +69,18 @@ public class FrontServlet extends HttpServlet {
         }
         return obj;
     }
+    //////////////////////////////////////////////////////
+    public byte[] convertInputStream (InputStream inputStream) throws IOException {
+    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+    byte[] buffer = new byte[4096]; // Taille du tampon temporaire
+
+    int bytesRead;
+    while ((bytesRead = inputStream.read(buffer)) != -1) {
+        byteArrayOutputStream.write(buffer, 0, bytesRead);
+    }
+
+    return byteArrayOutputStream.toByteArray();
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
@@ -86,7 +107,7 @@ public class FrontServlet extends HttpServlet {
                   method=methods[u];
               }
           }
-           
+///////////////////////////////////////////////////////////////////////////////////////////// 7
             for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
             {
                 Field[]at=objet.getClass().getDeclaredFields();
@@ -95,11 +116,22 @@ public class FrontServlet extends HttpServlet {
                     if(at[i].getName().equalsIgnoreCase(mapForm.getKey()))
                     {
                       at[i].setAccessible(true);
+                      
                       if(at[i].getType()==int.class)
                         { at[i].setInt(objet, Integer.parseInt(mapForm.getValue()[0]));}
                       
                       if(at[i].getType()==Double.class)
-                        { at[i].setDouble(objet, Double.valueOf(mapForm.getValue()[0]));}                      
+                        { at[i].setDouble(objet, Double.valueOf(mapForm.getValue()[0]));}  
+                      
+                      if(at[i].getType()==FileUpload.class)
+                        { 
+                            Part part=request.getPart(at[i].getName());
+                            FileUpload fileUpload=new FileUpload();
+                            fileUpload.setName(part.getSubmittedFileName());
+                            fileUpload.setFileBite(convertInputStream (part.getInputStream()));
+                            at[i].set(objet,fileUpload);
+                        }                      
+
                     }
                 }
             }
