@@ -21,10 +21,11 @@ public class Client {
     }
 
     @Url(nom="/client")
-    public ModelView setNumCompte(@Argument(nom="numCompte") String numCompte) {
-        this.numCompte = numCompte;
+    public ModelView setNumCompte(@Argument(nom="numCompte") int[] numCompte) {
          ModelView modelView=new ModelView();
          modelView.setView("test.jsp");
+         modelView.addItem("hh", numCompte);
+         System.out.println(numCompte);
          return modelView;
     }
     

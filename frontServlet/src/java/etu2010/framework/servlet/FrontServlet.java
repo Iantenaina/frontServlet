@@ -11,10 +11,12 @@ import etu2010.framework.Mapping;
 import etu2010.framework.ModelView;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Parameter;
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Level;
@@ -37,6 +39,27 @@ public class FrontServlet extends HttpServlet {
         MappingUrls=FonctionURL.fonction();
         
     }
+    public Object[] convertArray(Type type,String[]parametre)
+    {
+        Object[] obj;
+        obj=new Object[parametre.length];
+        for(int j=0;j<parametre.length;j++)
+        {
+         if(type ==int.class)
+            {
+                 obj[j]= (Object)Integer.parseInt(parametre[j]);
+            }
+         if(type==String.class)
+            {
+                 obj[j]= (Object)String.valueOf(parametre[j]);
+            }
+         if(type==double.class)
+            {
+                 obj[j]= (Object)Double.parseDouble(parametre[j]);
+            }
+        }
+        return obj;
+    }
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
@@ -53,7 +76,16 @@ public class FrontServlet extends HttpServlet {
            Class<?> classe=Class.forName(m.getClassName());
            Object objet =classe.newInstance();
 
-          Method method =objet.getClass().getMethod(m.getMethod());
+           
+          Method method =null;
+          Method[]methods=objet.getClass().getMethods();
+          for(int u=0;u<methods.length;u++)
+          {
+              if(methods[u].getName().equals( m.getMethod()))
+              {
+                  method=methods[u];
+              }
+          }
            
             for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
             {
@@ -85,7 +117,51 @@ public class FrontServlet extends HttpServlet {
                             { 
                                 if(argument.nom().equals(mapForm.getKey()))
                                 {
-                                   obj[j]=(Object)mapForm.getValue()[0];
+                                    if (parametre[j].getType().isArray())
+                                    {
+                                        Class<?> componentType =parametre[j].getType().getComponentType();
+                                        Object arrayParam =Array.newInstance(componentType,mapForm.getValue().length);
+                                        
+                                        for(int u=0;u<mapForm.getValue().length;u++)
+                                        {
+                                            Object convertedValue = null;
+                                            
+                                            if(componentType==int.class)
+                                              {
+                                                   convertedValue= (Object)Integer.parseInt(mapForm.getValue()[u]);
+                                              }
+                                           if(componentType==String.class)
+                                              {
+                                                   convertedValue= (Object)String.valueOf(mapForm.getValue()[u]);
+                                              }
+                                           if(componentType==double.class)
+                                              {
+                                                   convertedValue= (Object)Double.parseDouble(mapForm.getValue()[u]);
+                                              }
+
+                                     Array.set(arrayParam,u,convertedValue);
+                                        }
+                                        obj[j]=arrayParam;
+                                    } 
+                                    
+                                    else
+                                    {
+                                      if(parametre[j].getType()==int.class)
+                                        {
+                                             obj[j]= (Object)Integer.parseInt(mapForm.getValue()[0]);
+                                        }
+                                     if(parametre[j].getType()==String.class)
+                                        {
+                                             obj[j]= (Object)String.valueOf(mapForm.getValue()[0]);
+                                        }
+                                     if(parametre[j].getType()==double.class)
+                                        {
+                                             obj[j]= (Object)Double.parseDouble(mapForm.getValue()[0]);
+                                        }
+                                    }
+                                    
+                                   
+              
                                 }
                             }
                       }

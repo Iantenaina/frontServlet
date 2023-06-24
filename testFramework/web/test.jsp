@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-      ok test framework
+        <%= request.getAttribute("hh") %>
     </body>
 </html>
