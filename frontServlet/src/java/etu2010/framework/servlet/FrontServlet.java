@@ -10,8 +10,6 @@ import etu2010.framework.FileUpload;
 import etu2010.framework.FonctionURL;
 import etu2010.framework.Mapping;
 import etu2010.framework.ModelView;
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -33,7 +31,6 @@ import javax.servlet.http.Part;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
 /**
  *
  * @author ITU
@@ -41,11 +38,21 @@ import java.util.Arrays;
 @MultipartConfig()
 public class FrontServlet extends HttpServlet {
    Map<String,Mapping> MappingUrls=new HashMap<>();
-
+   Map <Class<?>,Object> map=new HashMap<>();
     @Override
+    
     public void init() throws ServletException {
         MappingUrls=FonctionURL.fonction();
-        
+       try 
+       {
+           map=FonctionURL.singleton();
+       } 
+       catch (InstantiationException ex) {
+           Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+       } 
+       catch (IllegalAccessException ex) {
+           Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+       }
     }
 /////////////////////////////////////////////////////////////////8    
     public Object[] convertArray(Type type,String[]parametre)
@@ -95,8 +102,16 @@ public class FrontServlet extends HttpServlet {
        {
            Mapping m=MappingUrls.get(currentUrl);
            Class<?> classe=Class.forName(m.getClassName());
-           Object objet =classe.newInstance();
-
+           Object objet =  null;
+           if(map.containsKey(classe))
+           {
+               FonctionURL.resetObject(objet);
+               objet=map.get(classe);
+           }
+           else
+           {
+               objet=classe.newInstance();
+           }
            
           Method method =null;
           Method[]methods=objet.getClass().getMethods();
