@@ -88,9 +88,38 @@ public class FrontServlet extends HttpServlet {
 
     return byteArrayOutputStream.toByteArray();
 }
+//////////////////////////////////////////////////////////////////
+   public boolean  checkAuth( HttpServletRequest request,Method method)
+   {
+      String isConnected=getServletContext().getInitParameter("isCoSession");
+      String profil= getServletContext().getInitParameter("isCoProfl");
+        if(!method.isAnnotationPresent(Auth.class))
+        {
+          return true;
+        }
+        if(request.getSession().getAttribute(isConnected)==null )
+        {
+            return false;
+        }
+        if((boolean)request.getSession().getAttribute(isConnected)==false)
+        {
+           return false;
+        }
+         Auth auth=method.getAnnotation(Auth.class); 
+        if( auth.profil()=="")
+        {   
+          if(auth.profil().equals((String)request.getSession().getAttribute(profil)))
+          {
+             return false;
+          }
+        }
+        
+       return true; 
+   }
+    
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException {
+            throws ServletException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
             out.println(request.getContextPath()+request.getServletPath()+ "?" +request.getQueryString());
@@ -212,7 +241,11 @@ public class FrontServlet extends HttpServlet {
                                 }
                             }
                       }
-                   }               
+                   } 
+            if(this.checkAuth(request,method) == false)
+            {
+               throw  new Exception("aller");
+            }
            ModelView model=(ModelView)method.invoke(objet,obj);
             
             
@@ -223,6 +256,15 @@ public class FrontServlet extends HttpServlet {
                   request.setAttribute(newMap.getKey(),newMap.getValue());
               }
            }
+           
+           if(model.getSession()!=null)
+           {
+              for(Map.Entry<String,Object> newMap :model.getSession().entrySet())
+              {
+                  request.getSession().setAttribute(newMap.getKey(),newMap.getValue());
+              }
+           }
+           
            response.getWriter().print(model.getView());
                 RequestDispatcher disp = request.getRequestDispatcher(model.getView());
                  disp.forward(request, response);

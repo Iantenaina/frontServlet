@@ -14,6 +14,15 @@ import java.util.HashMap;
 public class ModelView {
     String view ;
     HashMap<String,Object> data;
+    HashMap<String,Object> session;
+
+    public String getView() {
+        return view;
+    }
+
+    public void setView(String view) {
+        this.view = view;
+    }
 
     public HashMap<String, Object> getData() {
         return data;
@@ -22,15 +31,17 @@ public class ModelView {
     public void setData(HashMap<String, Object> data) {
         this.data = data;
     }
-    
-    public String getView() {
-        return view;
+
+    public HashMap<String, Object> getSession() {
+        return session;
     }
 
-    public void setView(String view) {
-        this.view = view;
+    public void setSession(HashMap<String, Object> session) {
+        this.session = session;
     }
+
     
+   //set attribut fa makn amn frontservlet 
     public void addItem(String Key,Object value)
     {
       if(this.data==null)
@@ -38,6 +49,16 @@ public class ModelView {
         this.data=new HashMap<String,Object>();
       }  
       this.data.put(Key, value);
+    }
+    
+    //miajouter session fa makn amn frontservlet 
+     public void addSession(String Key,Object value)
+    {
+      if(this.session==null)
+      {
+        this.session=new HashMap<String,Object>();
+      }  
+      this.session.put(Key, value);
     }
 
     

@@ -13,4 +13,12 @@
             30
         </session-timeout>
     </session-config>
+    <context-param>
+        <param-name>isCoSession</param-name>
+        <param-value>isCoS</param-value>
+    </context-param>
+       <context-param>
+        <param-name>isCoProfl</param-name>
+        <param-value>isCoP</param-value>
+    </context-param>
 </web-app>
