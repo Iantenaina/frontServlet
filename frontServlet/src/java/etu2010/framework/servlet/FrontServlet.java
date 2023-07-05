@@ -10,6 +10,7 @@ import etu2010.framework.FileUpload;
 import etu2010.framework.FonctionURL;
 import etu2010.framework.Mapping;
 import etu2010.framework.ModelView;
+import etu2010.framework.Utils;
 import java.io.PrintWriter;
 import java.lang.reflect.Array;
 import java.lang.reflect.Field;
@@ -149,9 +150,24 @@ public class FrontServlet extends HttpServlet {
               if(methods[u].getName().equals( m.getMethod()))
               {
                   method=methods[u];
+                  break;
               }
+              
           }
-///////////////////////////////////////////////////////////////////////////////////////////// 7
+/////////////////////////////////////////////////////////////////////////////////////////////
+          if(method.isAnnotationPresent(Session.class))
+          {
+            Field[] at= objet.getClass().getDeclaredFields();
+            for(int i=0;i<at.length;i++)
+            {
+                if(at[i].getName().equals("session") && at[i].getType()==HashMap.class)
+                {
+                    at[i].setAccessible(true);
+                    at[i].set(objet, Utils.getAllSession(request));
+                }
+            }
+          }
+/////////////////////////////////////////////////////////////////////////////////////////////
             for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
             {
                 Field[]at=objet.getClass().getDeclaredFields();
@@ -299,6 +315,8 @@ public class FrontServlet extends HttpServlet {
            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
        } catch (InvocationTargetException ex) {
            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (Exception ex) {
+           Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
        }
         
     }
@@ -327,6 +345,8 @@ public class FrontServlet extends HttpServlet {
        } catch (IllegalArgumentException ex) {
            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
        } catch (InvocationTargetException ex) {
+           Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
+       } catch (Exception ex) {
            Logger.getLogger(FrontServlet.class.getName()).log(Level.SEVERE, null, ex);
        }
     }
