@@ -1,5 +1,6 @@
 package etu2010.framework.servlet;
 
+import com.google.gson.Gson;
 import etu2010.framework.FileUpload;
 import etu2010.framework.FonctionURL;
 import etu2010.framework.Mapping;
@@ -256,6 +257,17 @@ public class FrontServlet extends HttpServlet {
             {
                throw  new Exception("aller");
             }
+            
+            if(method.isAnnotationPresent(RestAPI.class))
+            {
+              Object o=method.invoke(objet, obj);
+               Gson gson=new Gson();
+               String jsonObject=gson.toJson(o);
+               response.getWriter().print(jsonObject);
+            }
+            else
+            {
+                            
            ModelView model=(ModelView)method.invoke(objet,obj);
             
             
@@ -276,9 +288,8 @@ public class FrontServlet extends HttpServlet {
            }
            //sprint13
            if(model.isIsJson()==true)
-           {
-               model.dataToJson();
-               response.getWriter().print(objet);
+           { 
+               response.getWriter().print(model.dataToJson());
            }
            else
            {
@@ -287,6 +298,9 @@ public class FrontServlet extends HttpServlet {
                  disp.forward(request, response);
            }
            
+                
+            }
+        
            
 
            
