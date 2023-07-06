@@ -279,12 +279,25 @@ public class FrontServlet extends HttpServlet {
               }
            }
            
+           if(model.isInvalidate()==true)
+           {
+              request.getSession().invalidate();
+           }
+           
            if(model.getSession()!=null)
            {
               for(Map.Entry<String,Object> newMap :model.getSession().entrySet())
               {
                   request.getSession().setAttribute(newMap.getKey(),newMap.getValue());
               }
+           }
+           
+           if(model.getSessionRemove()!=null)
+           {
+               for(int i=0;i<model.getSessionRemove().size();i++)
+               {
+                   request.getSession().removeAttribute(model.getSessionRemove().get(i));
+               }
            }
            //sprint13
            if(model.isIsJson()==true)

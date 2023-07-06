@@ -6,6 +6,7 @@
 package etu2010.framework;
 
 import com.google.gson.Gson;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -17,8 +18,8 @@ public class ModelView {
     HashMap<String,Object> data;
     HashMap<String,Object> session;
     boolean isJson=false;
-    
-    
+    boolean invalidate=false;
+    ArrayList<String> sessionRemove;
 
     public String getView() {
         return view;
@@ -52,9 +53,24 @@ public class ModelView {
         this.isJson = isJson;
     }
 
+    public boolean isInvalidate() {
+        return invalidate;
+    }
 
-     
-    
+    public void setInvalidate(boolean invalidate) {
+        this.invalidate = invalidate;
+    }
+
+    public ArrayList<String> getSessionRemove() {
+        return sessionRemove;
+    }
+
+    public void setSessionRemove(ArrayList<String> sessionRemove) {
+        this.sessionRemove = sessionRemove;
+    }
+
+  
+
    //set attribut fa makn amn frontservlet 
     public void addItem(String Key,Object value)
     {
@@ -87,6 +103,15 @@ public class ModelView {
           json=gson.toJson(this.getData());
          return json;
      }
-
+    ////////////////////////////////
+  //set attribut fa makn amn frontservlet 
+    public void addSessionRemove(String Key)
+    {
+      if(this.sessionRemove==null)
+      {
+       this.sessionRemove=new ArrayList<>();
+      }  
+       sessionRemove.add(Key);
+    }
     
 }
