@@ -1,11 +1,5 @@
 package etu2010.framework.servlet;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 import etu2010.framework.FileUpload;
 import etu2010.framework.FonctionURL;
 import etu2010.framework.Mapping;
@@ -77,7 +71,7 @@ public class FrontServlet extends HttpServlet {
         }
         return obj;
     }
-    //////////////////////////////////////////////////////
+//////////////////////////////////////////////////////
     public byte[] convertInputStream (InputStream inputStream) throws IOException {
     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
     byte[] buffer = new byte[4096]; // Taille du tampon temporaire
@@ -280,10 +274,21 @@ public class FrontServlet extends HttpServlet {
                   request.getSession().setAttribute(newMap.getKey(),newMap.getValue());
               }
            }
-           
-           response.getWriter().print(model.getView());
+           //sprint13
+           if(model.isIsJson()==true)
+           {
+               model.dataToJson();
+               response.getWriter().print(objet);
+           }
+           else
+           {
+                response.getWriter().print(model.getView());           
                 RequestDispatcher disp = request.getRequestDispatcher(model.getView());
                  disp.forward(request, response);
+           }
+           
+           
+
            
            
        }

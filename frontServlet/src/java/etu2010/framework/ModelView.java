@@ -5,6 +5,7 @@
  */
 package etu2010.framework;
 
+import com.google.gson.Gson;
 import java.util.HashMap;
 
 /**
@@ -15,6 +16,9 @@ public class ModelView {
     String view ;
     HashMap<String,Object> data;
     HashMap<String,Object> session;
+    boolean isJson=false;
+    
+    
 
     public String getView() {
         return view;
@@ -40,6 +44,16 @@ public class ModelView {
         this.session = session;
     }
 
+    public boolean isIsJson() {
+        return isJson;
+    }
+
+    public void setIsJson(boolean isJson) {
+        this.isJson = isJson;
+    }
+
+
+     
     
    //set attribut fa makn amn frontservlet 
     public void addItem(String Key,Object value)
@@ -60,6 +74,19 @@ public class ModelView {
       }  
       this.session.put(Key, value);
     }
+     
+     //mamadika data en json
+     public String dataToJson()
+     {
+         String json=null;
+          if(isJson==false)
+          {
+            return null;
+          }
+         Gson gson =new Gson(); 
+          json=gson.toJson(this.getData());
+         return json;
+     }
 
     
 }
