@@ -15,6 +15,10 @@ import etu2010.framework.servlet.Url;
  */
 public class Client {
     String numCompte;
+    
+    public Client(String numCompte) {
+        this.numCompte = numCompte;
+    }
 
     public String getNumCompte() {
         return numCompte;

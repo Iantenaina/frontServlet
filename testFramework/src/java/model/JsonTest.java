@@ -5,6 +5,7 @@
 package model;
 
 import etu2010.framework.ModelView;
+import etu2010.framework.servlet.RestAPI;
 import etu2010.framework.servlet.Url;
 
 /**
@@ -22,5 +23,17 @@ public class JsonTest {
          modelView.addItem("hehe2", 1.41313243);
          
          return modelView;
+    }
+    
+    @RestAPI
+    @Url(nom = "/clients")
+    public Client[] clients() {
+        Client[] clientsTab = new Client[3];
+        
+        clientsTab[0] = new Client("hehe");
+        clientsTab[1] = new Client("ffff");
+        clientsTab[2] = new Client("jojo");
+        
+        return clientsTab;
     }
 }
