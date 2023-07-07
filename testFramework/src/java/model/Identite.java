@@ -5,6 +5,7 @@
  */
 package model;
 
+import etu2010.framework.ModelView;
 import etu2010.framework.servlet.Url;
 
 /**
@@ -16,4 +17,15 @@ public class Identite
     String nom;
     String prenom;
     int age;
+    
+    @Url(nom = "/InsertIdentite")
+    public ModelView getIdentite()
+    {
+       ModelView modelView =new ModelView();
+       modelView.setView("testIdentite.jsp");
+       modelView.addItem("nom",nom);
+       modelView.addItem("prenom",prenom);
+       modelView.addItem("age",age);
+       return modelView;
+    }
 }

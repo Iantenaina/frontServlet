@@ -86,7 +86,20 @@ public class FrontServlet extends HttpServlet {
                   method=methods[u];
               }
           }
-           
+/////////////////////////////////////////////////////////////////////////////////////////////
+          if(method.isAnnotationPresent(Session.class))
+          {
+            Field[] at= objet.getClass().getDeclaredFields();
+            for(int i=0;i<at.length;i++)
+            {
+                if(at[i].getName().equals("session") && at[i].getType()==HashMap.class)
+                {
+                    at[i].setAccessible(true);
+                    at[i].set(objet, Utils.getAllSession(request));
+                }
+            }
+          }
+////////////////////////////////Sprint7/////////////////////////////////////////////////////////////
             for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
             {
                 Field[]at=objet.getClass().getDeclaredFields();
@@ -103,7 +116,7 @@ public class FrontServlet extends HttpServlet {
                     }
                 }
             }
- //////////////////////////////////////////////////////////////////////////      
+ ////////////////////////////Sprint8//////////////////////////////////////////////      
                 Object[] obj;
                  Parameter[]parametre;
                  parametre= method.getParameters();
@@ -165,8 +178,23 @@ public class FrontServlet extends HttpServlet {
                                 }
                             }
                       }
-                   }               
-           ModelView model=(ModelView)method.invoke(objet,obj);
+                   } 
+            if(this.checkAuth(request,method) == false)
+            {
+               throw  new Exception("aller");
+            }
+            
+            if(method.isAnnotationPresent(RestAPI.class))
+            {
+              Object o=method.invoke(objet, obj);
+               Gson gson=new Gson();
+               String jsonObject=gson.toJson(o);
+               response.getWriter().print(jsonObject);
+            }
+            else
+            {
+                            
+           ModelView model=(ModelView)method.invoke(objet,obj);//class retournen le url rehefa misy annotation
             
             
            if(model.getData()!=null)
@@ -176,8 +204,36 @@ public class FrontServlet extends HttpServlet {
                   request.setAttribute(newMap.getKey(),newMap.getValue());
               }
            }
-           response.getWriter().print(model.getView());
-                RequestDispatcher disp = request.getRequestDispatcher(model.getView());
+           
+           if(model.isInvalidate()==true)
+           {
+              request.getSession().invalidate();
+           }
+           
+           if(model.getSession()!=null)
+           {
+              for(Map.Entry<String,Object> newMap :model.getSession().entrySet())
+              {
+                  request.getSession().setAttribute(newMap.getKey(),newMap.getValue());
+              }
+           }
+           
+           if(model.getSessionRemove()!=null)
+           {
+               for(int i=0;i<model.getSessionRemove().size();i++)
+               {
+                   request.getSession().removeAttribute(model.getSessionRemove().get(i));
+               }
+           }
+           //sprint13
+           if(model.isIsJson()==true)
+           { 
+               response.getWriter().print(model.dataToJson());
+           }
+           else
+           {
+                response.getWriter().print(model.getView());           
+                RequestDispatcher disp = request.getRequestDispatcher(model.getView());//misetter makany amn view
                  disp.forward(request, response);
            
            
