@@ -1,10 +1,10 @@
 <%-- 
-    Document   : test1
-    Created on : May 9, 2023, 12:10:43 AM
-    Author     : Iante
+    Document   : test
+    Created on : 24 mars 2023, 12:00:29
+    Author     : itu
 --%>
+
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-<%int valeurMap=(int)request.getAttribute("huhu");%>
 <!DOCTYPE html>
 <html>
     <head>
@@ -12,6 +12,8 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <h1><%out.print(valeurMap);%></h1>
+          <%= request.getAttribute("nom") %>
+          <%= request.getAttribute("prenom") %>
+          <%= request.getAttribute("age") %>
     </body>
 </html>

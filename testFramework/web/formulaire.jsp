@@ -12,14 +12,14 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form method="GET" action=".\FontServlet">
+        <form method="GET" action="InsertIdentite">
             <h6>NOM</h6>
             <input type="text" name="nom">
              <h6>PRENOM</h6>
             <input type="text" name="prenom">
              <h6>AGE</h6>
             <input type="text" name="age">
-            <input typr="submit" value="Valider">
+            <input type="submit" value="Valider">
         </form>
         
     </body>
