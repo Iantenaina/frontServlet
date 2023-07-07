@@ -102,9 +102,9 @@ public class FrontServlet extends HttpServlet {
            return false;
         }
          Auth auth=method.getAnnotation(Auth.class); 
-        if( auth.profil()=="")
+        if( auth.profil()!="")
         {   
-          if(auth.profil().equals((String)request.getSession().getAttribute(profil)))
+          if(!auth.profil().equals((String)request.getSession().getAttribute(profil)))
           {
              return false;
           }
