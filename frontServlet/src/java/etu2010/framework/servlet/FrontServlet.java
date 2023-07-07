@@ -168,6 +168,7 @@ public class FrontServlet extends HttpServlet {
                 Field[]at=objet.getClass().getDeclaredFields();
                 for(int i=0;i<at.length;i++)
                 {
+                    System.out.println(at[i].getName());
                     if(at[i].getName().equalsIgnoreCase(mapForm.getKey()))
                     {
                       at[i].setAccessible(true);
@@ -182,7 +183,9 @@ public class FrontServlet extends HttpServlet {
                       
                       if(at[i].getType()==FileUpload.class)
                         { 
+                            System.out.println("File upppppp");
                             Part part=request.getPart(at[i].getName());
+                            
                             FileUpload fileUpload=new FileUpload();
                             fileUpload.setName(part.getSubmittedFileName());
                             fileUpload.setFileBite(convertInputStream (part.getInputStream()));
