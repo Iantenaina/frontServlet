@@ -162,13 +162,30 @@ public class FrontServlet extends HttpServlet {
                 }
             }
           }
+          
+////////////////////////////////Sprint9/////////////////////////////////////
+          Field[]att=objet.getClass().getDeclaredFields();
+          for(int i=0;i<att.length;i++)
+          {
+              if(att[i].getType()==FileUpload.class)
+                { 
+                    System.out.println("File upppppp");
+                    Part part=request.getPart(att[i].getName());
+
+                    FileUpload fileUpload=new FileUpload();
+                    fileUpload.setName(part.getSubmittedFileName());
+                    fileUpload.setFileBite(convertInputStream (part.getInputStream()));
+                    att[i].set(objet,fileUpload);
+                }   
+          }
+          
 ////////////////////////////////Sprint7/////////////////////////////////////////////////////////////
             for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
             {
                 Field[]at=objet.getClass().getDeclaredFields();
                 for(int i=0;i<at.length;i++)
                 {
-                    System.out.println(at[i].getName());
+                    System.out.print(at[i].getName());
                     if(at[i].getName().equalsIgnoreCase(mapForm.getKey()))
                     {
                       at[i].setAccessible(true);
@@ -180,18 +197,6 @@ public class FrontServlet extends HttpServlet {
                       
                       if(at[i].getType()==Double.class)
                         { at[i].setDouble(objet, Double.valueOf(mapForm.getValue()[0]));}  
-                      
-                      if(at[i].getType()==FileUpload.class)
-                        { 
-                            System.out.println("File upppppp");
-                            Part part=request.getPart(at[i].getName());
-                            
-                            FileUpload fileUpload=new FileUpload();
-                            fileUpload.setName(part.getSubmittedFileName());
-                            fileUpload.setFileBite(convertInputStream (part.getInputStream()));
-                            at[i].set(objet,fileUpload);
-                        }                      
-
                     }
                 }
             }

@@ -22,7 +22,7 @@ public class FichierModel {
         modelView.addItem("bytes", fichier.getFileBite());
         modelView.addItem("filename", fichier.getName());
         
-        modelView.setView("FichierResulat.jsp");
+        modelView.setView("FichierResultat.jsp");
         
         return modelView;
     }
