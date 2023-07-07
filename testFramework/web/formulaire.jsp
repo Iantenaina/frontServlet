@@ -12,7 +12,7 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <form method="GET" action=".\FontServlet">
+        <form method="GET" action="InsertIdentite">
             <h6>NOM</h6>
             <input type="text" name="nom">
              <h6>PRENOM</h6>

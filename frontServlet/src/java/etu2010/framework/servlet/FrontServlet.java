@@ -162,7 +162,7 @@ public class FrontServlet extends HttpServlet {
                 }
             }
           }
-/////////////////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////Sprint7/////////////////////////////////////////////////////////////
             for(Map.Entry<String,String[]> mapForm : request.getParameterMap().entrySet())
             {
                 Field[]at=objet.getClass().getDeclaredFields();
@@ -192,7 +192,7 @@ public class FrontServlet extends HttpServlet {
                     }
                 }
             }
- //////////////////////////////////////////////////////////////////////////      
+ ////////////////////////////Sprint8//////////////////////////////////////////////      
                 Object[] obj;
                  Parameter[]parametre;
                  parametre= method.getParameters();
@@ -270,7 +270,7 @@ public class FrontServlet extends HttpServlet {
             else
             {
                             
-           ModelView model=(ModelView)method.invoke(objet,obj);
+           ModelView model=(ModelView)method.invoke(objet,obj);//class retournen le url rehefa misy annotation
             
             
            if(model.getData()!=null)
@@ -281,12 +281,25 @@ public class FrontServlet extends HttpServlet {
               }
            }
            
+           if(model.isInvalidate()==true)
+           {
+              request.getSession().invalidate();
+           }
+           
            if(model.getSession()!=null)
            {
               for(Map.Entry<String,Object> newMap :model.getSession().entrySet())
               {
                   request.getSession().setAttribute(newMap.getKey(),newMap.getValue());
               }
+           }
+           
+           if(model.getSessionRemove()!=null)
+           {
+               for(int i=0;i<model.getSessionRemove().size();i++)
+               {
+                   request.getSession().removeAttribute(model.getSessionRemove().get(i));
+               }
            }
            //sprint13
            if(model.isIsJson()==true)
@@ -296,7 +309,7 @@ public class FrontServlet extends HttpServlet {
            else
            {
                 response.getWriter().print(model.getView());           
-                RequestDispatcher disp = request.getRequestDispatcher(model.getView());
+                RequestDispatcher disp = request.getRequestDispatcher(model.getView());//misetter makany amn view
                  disp.forward(request, response);
            }
            
