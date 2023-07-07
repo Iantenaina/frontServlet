@@ -32,4 +32,13 @@ public class LoginTest {
          
          return modelView;
     }
+    
+    @Url(nom = "/disconnect")
+    public ModelView Deconnect() {
+        ModelView modelView=new ModelView();
+        modelView.addSessionRemove("isCoP");
+         modelView.setView("Effectuer.jsp");
+         
+         return modelView;
+    }
 }
