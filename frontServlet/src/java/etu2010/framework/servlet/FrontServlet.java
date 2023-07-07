@@ -118,10 +118,10 @@ public class FrontServlet extends HttpServlet {
             throws ServletException, IOException, ClassNotFoundException, InstantiationException, IllegalAccessException, NoSuchMethodException, IllegalArgumentException, InvocationTargetException, Exception {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
-            out.println(request.getContextPath()+request.getServletPath()+ "?" +request.getQueryString());
+//            out.println(request.getContextPath()+request.getServletPath()+ "?" +request.getQueryString());
              String currentUrl = request.getRequestURI().replace(request.getContextPath(), "");
              
-           out.print(MappingUrls.size());
+//           out.print(MappingUrls.size());
              
        if (MappingUrls.containsKey(currentUrl))
        {
