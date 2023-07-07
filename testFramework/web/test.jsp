@@ -12,6 +12,6 @@
         <title>JSP Page</title>
     </head>
     <body>
-        <%= request.getAttribute("hh") %>
+        <%= request.getAttribute("huhu") %>
     </body>
 </html>

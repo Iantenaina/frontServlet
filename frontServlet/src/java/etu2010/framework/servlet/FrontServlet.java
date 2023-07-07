@@ -130,8 +130,8 @@ public class FrontServlet extends HttpServlet {
            Object objet =  null;
            if(map.containsKey(classe))
            {
-               FonctionURL.resetObject(objet);
                objet=map.get(classe);
+               FonctionURL.resetObject(objet);
            }
            else
            {

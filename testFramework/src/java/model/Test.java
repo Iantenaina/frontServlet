@@ -6,18 +6,22 @@
 package model;
 
 import etu2010.framework.ModelView;
+import etu2010.framework.servlet.Scope;
 import etu2010.framework.servlet.Url;
 
 /**
  *
  * @author itu
  */
+@Scope(type = "Singleton")
 public class Test {
-     @Url(nom="/suite")
+    int miverina = 0;
+ @Url(nom="/suite")
  public ModelView test()
   {
+      miverina++;
       ModelView m=new ModelView();
-      m.addItem("huhu",1);
+      m.addItem("huhu",miverina);
       m.setView("test.jsp");
     return m;
   }
