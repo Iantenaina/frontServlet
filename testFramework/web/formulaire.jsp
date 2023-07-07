@@ -19,7 +19,7 @@
             <input type="text" name="prenom">
              <h6>AGE</h6>
             <input type="text" name="age">
-            <input typr="submit" value="Valider">
+            <input type="submit" value="Valider">
         </form>
         
     </body>
